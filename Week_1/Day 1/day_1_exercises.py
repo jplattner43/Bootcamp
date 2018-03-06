@@ -57,11 +57,16 @@ def exp_recursive(b, e, counter=1):
 
 def zero_sum(arr):
 	output_list = []
-	for x in arr[:]:
+	for x in arr:
 		for y in arr:
 			if x + y == 0 and [arr.index(y), arr.index(x)] not in output_list:
 				output_list.append([arr.index(x), arr.index(y)])
 	return output_list
+
+print(zero_sum([1, 5, 0, -5, 3, -1]))  # [[0, 5], [1, 3], [2, 2]]
+print(zero_sum([1, -1]))  # [[0, 1]]
+print(zero_sum([0, 4, 3, 5]))  # [[0, 0]]
+
 
 #sentence = input('Enter a sentence: ')
 
@@ -81,6 +86,7 @@ def new_dict(arr):
 	for x in arr[::-1]:
 		dic = {x:dic}
 	return dic
+
 
 def gen_dicitionary():
 	return {x:x**2 for x in range(1,21)}
@@ -111,5 +117,30 @@ def write_number(n):
 		output_string += '-' + dic[int(x)][i]
 	return output_string[1:] if n % 10 != 0 else output_string[1:-1]
 #cuts off the hyphen if the last digit is a zero
-print(write_number(17))
+print(write_number(11))
+
+
+# Withdraw, Deposit
+
+def deposit_withdraw():
+	total = 0
+	while True:
+		s = input('Withdraw or Deposit')
+		if not s:
+			break
+		elif s[0] == 'D':
+			tot -= int(s[2:])
+		elif s[0] == 'W':
+			tot += int(s[2:])
+		else:
+			print('Try again')
+	return total
+
+#deposit_withdraw()
+
+
+
+
+
+
 
