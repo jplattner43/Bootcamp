@@ -41,9 +41,22 @@ def food_collision(snake, snack):
 	return False
 
 def wall_collision(x, y):
-	if x < 0 or x > 390 or y < 0 or y > 290:
+	# makes it so you don't lose multiple lines if you hit the left wall
+	if x < 0:
+		global direction
+		direction = 'right'
+		return True
+	elif x > 390 or y < 0 or y > 290:
 		return True
 	return False
+
+def draw_snake(snake):
+	for y in snake:
+		pygame.draw.rect(canvas, blue, (y[0], y[1], 10, 10))
+	return snake
+
+
+
 
 font = pygame.font.SysFont('arial', 20)
 food = Food(random.randint(1,400), random.randint(1, 300))
@@ -66,29 +79,25 @@ while True:
 		snake_body.append(snake_body.pop(0))
 		snake_body[-1][0] = snake_body[-2][0] + 10
 		snake_body[-1][1] = snake_body[-2][1]
-		for y in snake_body:
-			pygame.draw.rect(canvas, blue, (y[0], y[1], 10, 10))
+		draw_snake(snake_body)
 
 	if direction == 'left':
 		snake_body.append(snake_body.pop(0))
 		snake_body[-1][0] = snake_body[-2][0] - 10
 		snake_body[-1][1] = snake_body[-2][1]
-		for y in snake_body:
-			pygame.draw.rect(canvas, blue, (y[0], y[1], 10, 10))
+		draw_snake(snake_body)
 
 	if direction == 'down':
 		snake_body.append(snake_body.pop(0))
 		snake_body[-1][1] = snake_body[-2][1] + 10
 		snake_body[-1][0] = snake_body[-2][0]
-		for y in snake_body:
-			pygame.draw.rect(canvas, blue, (y[0], y[1], 10, 10))
+		draw_snake(snake_body)
 
 	if direction == 'up':
 		snake_body.append(snake_body.pop(0))
 		snake_body[-1][1] = snake_body[-2][1] - 10
 		snake_body[-1][0] = snake_body[-2][0]
-		for y in snake_body:
-			pygame.draw.rect(canvas, blue, (y[0], y[1], 10, 10))
+		draw_snake(snake_body)
 	
 	if food_collision(snake_body, food) == True:
 		del food
@@ -99,9 +108,11 @@ while True:
 	
 	if wall_collision(snake_body[-1][0], snake_body[-1][1]) == True or (snake_body[-1] in snake_body[:-1]): #or [snake_body[-1][0], snake_body[-1][1]] in snake_body:
 		lives -= 1
+		
 		if lives == 0:
 			break
 		snake_body = [[180, 150], [190, 150], [200, 150]]
+		FPS = 10
 	
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
